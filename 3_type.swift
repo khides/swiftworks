@@ -66,7 +66,7 @@ opt = 1
 
 // アンラップ
 // オプショナルバインディング
-let optionalA :String? =  Optional.none
+let optionalA :String? =  Optional("a")
 if let a = optionalA { // 値が存在するときのみ実行
     print(type(of: a))
 }
