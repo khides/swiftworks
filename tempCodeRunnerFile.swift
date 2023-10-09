@@ -1,28 +1,23 @@
 
-// 型のネスト 型の中に型を定義できる
-struct NewsFeedItem {
-
-    enum Kind {
-    
-        case a 
-        case b 
-        case c 
-    }
-    let id: Int
-    let title: String
-    let kind :Kind
-
-    init(id: Int, title: String, kind: Kind){
-        self.id = id
-        self.title = title
-        self.kind = kind
+// クラスの継承を利用すべきとき
+// 複数の型の間でストアドプロパティの実装を共有する
+class Animal {
+    var owner: String?{
+        didSet{
+            guard let owner = owner else {
+                return
+            }
+            print("\(self.owner) was assigned as the owner")
+        }
     }
 }
-
-let kind = NewsFeedItem.Kind.a
-let item = NewsFeedItem(id: 1, title: "Table", kind: kind)
-switch item.kind {
-case .a : print("kind is .a")
-case .b : print("kind is .b")
-case .c : print("kind is .c")    
+class Dog: Animal {
 }
+class Cat: Animal {
+}
+class WildEagle: Animal {
+}
+let dog = Dog()
+dog.owner = "Taro"
+let cat = Cat() 
+print(cat.owner)
