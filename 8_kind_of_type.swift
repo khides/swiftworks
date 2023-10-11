@@ -1,19 +1,23 @@
+// 8.2 値の受け渡し方法による型分類 ///////////////////////////////////
 // 値型と参照型
-// 値型
-struct Collor  {
-
+// ・値型
+// // 複数の変数や定数で一つの値型のインスタンスを共有することはできない
+// // 一度代入したインスタンスは再代入を行わない限り不変
+// // 構造体と列挙型は値型
+struct Color  {
     var red: Int
     var green: Int
     var blue: Int
 }
-var a = Collor(red: 255, green: 0, blue: 0)
+var a = Color(red: 255, green: 0, blue: 0)
 var b = a
 a.red = 0
 print(a)
 print(b) // aとｂの中身は異なる
-// mutatingキーワード　//型の中で自分自身を変更する処理を実行　例えばappendメソッドは内部にmutatingを内包
-extension Int {
 
+// ・mutatingキーワード　
+// // 型の中で自分自身を変更する処理を実行　例えばappendメソッドは内部にmutatingを内包
+extension Int {
     mutating func increment() -> Void {
         self += 1
     }
@@ -24,9 +28,11 @@ a.increment()
 let b = 1
 // b.increment() //bに再代入ができないためコンパイルエラー　letは値の変更を防ぎたい場合に役立つ
 
-// 参照型
-class IntBox {
 
+// ・参照型
+// 複数の変数や定数で一つのインスタンスを共有できる
+// クラスが参照型
+class IntBox {
     var value: Int
     init(value: Int){
         self.value = value
@@ -37,12 +43,13 @@ var b = a
 
 a.value = 1
 print(b.value) //aとbはインスタンスを共有する
+
 // 安全にデータを取り扱うには値型、状態管理など変更の共有が必要な場合にのみ参照型を使用する
 
 
-// 構造体
-struct Article {
 
+// 8.3 構造体 //////////////////////////////////////////////////////////
+struct Article {
     let id: Int
     let title: String
     let body: String
@@ -74,7 +81,6 @@ let constant = SomeStruct(id: 1)
 
 // メソッド内でストアドプロパティを変更するには、mutatingキーワードが必要
 struct SomeStruct {
-
     var id : Int
     init(id: Int){
         self.id = id
@@ -87,9 +93,9 @@ var a = SomeStruct(id: 1)
 a.someMethod()
 print(a.id)
 
-// メンバーワイズイニシャライザ
+// ・メンバーワイズイニシャライザ
+// デフォルトで用意されるイニシャライザ
 struct Mail {
-
     var subject = "no subject"
     var body: String
 
@@ -98,9 +104,8 @@ let noSubject = Mail(body: "hello")
 print(noSubject.subject)
 
 
-// クラス
+// 8.4 クラス ////////////////////////////////////////////////////////
 class SomeClass {
-
     let id: Int
     let name: String
     init(id: Int, name: String){
@@ -114,11 +119,9 @@ class SomeClass {
 let instance = SomeClass(id: 1, name: "name")
 instance.printName()
 
-// クラス継承
+// ・クラス継承
 class User {
-
     let id: Int
-
     var message: String{
         return "hello"
     }
@@ -131,13 +134,10 @@ class User {
     }
 }
 class RegisteredUser: User {
-
     let name: String
-
-    override var message: String{
+    override var message: String{ // オーバーライド(型の構成要素の再定義)
         return "hello, my name is \(self.name)"
     }
-
     init(id: Int, name: String){
         self.name = name 
         super.init(id: id)
@@ -147,67 +147,57 @@ class RegisteredUser: User {
         print("name: \(self.name)")
     }
 }
-
 let user = User(id: 1)
 user.printProfile()
-
 let registeredUser = RegisteredUser(id: 2, name: "Taro")
 registeredUser.printProfile()
 
-// final キーワード
+// ・final キーワード
+// 継承とオーバーライドの禁止
 class SuperClass {
-
     func overridableMethod() -> Void {
     }
-    
     final func finalMethod() -> Void {
     }   
 }
-
 class subClass: SuperClass {
-
     override func overridableMethod() -> Void {
-        
     }
     // override func finalMethod() -> Void {        
     // }  // オーバーライド不可能
 }
 
-
+// ・クラスに紐づく要素
 // クラスプロパティ・クラスメソッドと、スタティックプロパティ・スタティックメソッド
 class A {
     class var className: String{
         return "A"
     }
-
     static var baseClassName: String{
         return "A"
     }
-
     class func someMethod() -> String {
         return "a"
     }
 }
-
 class B: A {
-
     override class var className: String{
         return "B"
     }
-
     // override static var baseClassName: String{
     //     return "A"
     // } // スタティックプロパティはオーバーライドできないのでコンパイルエラー
-
     override class func someMethod() -> String {
         return super.someMethod() + "->B"
     }
 } // 型に紐づく要素を定義する場合、サブクラスで変更できるかどうかで使いわけ
 
 
-// 指定イニシャライザ
+// ・指定イニシャライザとコンビニエンスイニシャライザ
+// 指定イニシャライザ：クラスの主となるイニシャライザ
+// コンビニエンスイニシャライザ：指定イニシャライザを中継するイニシャライザ
+// 様々な階層で定義されたプロパティが初期化されることを保証する仕組み
 class Mail {
-
     let from: String
     let to: String
     let title: String
@@ -256,18 +246,17 @@ class User {
 }
 
 
-// クラスのメモリ管理
+// ・クラスのメモリ管理
+// クラスが不要になったタイミングでメモリを解放する
 class SomeClass {
-
     deinit{
-
     }
 }
 
 
-// 値の比較と参照の比較
+// ・値の比較と参照の比較
+// 参照型であるクラスの値は変わりやすい
 class SomeClass: Equatable {
-
     static func == (lhs: SomeClass, rhs: SomeClass) -> Bool {
         return true
     }
@@ -281,7 +270,9 @@ print(a === b)
 print(a === c)
 
 
-// 列挙型 ケース・イニシャライザ・コンピューテッドプロパティを保持
+
+// 8.5 列挙型 ///////////////////////////////////////////////////////////////
+// ケース・イニシャライザ・コンピューテッドプロパティを保持
 enum Weekday {
     case sunday
     case monday
@@ -315,9 +306,10 @@ enum Weekday {
     }
 }
 
-// ローバリュー
+// ・ローバリュー
+// それぞれのケースの実体を定義
+// ローバリューは全て同一の型である必要がある
 enum Symbol: String {
-
     case sharp = "#"
     case doller = "$"
     case percent = "%"
@@ -326,9 +318,8 @@ print(Symbol.doller.rawValue)
 let symbol = Symbol(rawValue: "#")
 print(symbol?.rawValue)
 
-// ローバリューのデフォルト値
+// ・ローバリューのデフォルト値
 enum Option: Int {
-
     case none
     case one
     case undefined = 999
@@ -337,9 +328,8 @@ enum Option: Int {
 print(Option.none.rawValue)
 print(Option.undefined.rawValue)  
 
-// 連想値
+// ・連想値
 enum Color {
-
     case rgb(Float, Float, Float)
     case cmyk(Float, Float, Float, Float)
 }
@@ -357,7 +347,8 @@ case .cmyk(let c, let m , let y , let k):
     
 }
 
-// caseIterableプロトコル
+// ・caseIterableプロトコル
+// 要素列挙のプロトコル
 enum Fruit: CaseIterable {
     case peash, apple, grape
 }
