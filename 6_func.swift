@@ -1,11 +1,16 @@
-// 引数
+// 6.2 関数 //////////////////////////////////////////////////////////////
+// ・引数 ///////////////////////////////////////////////
+// // func someFunc(外部引数 内部引数: 型 = デフォルト引数)
+// // someFunc(実引数)
 func sum (_ int1: Int = 0, _ int2: Int = 0) -> Int {
     return int1 + int2
 }
 print(sum(1,2))
 
 
-// inout 引数
+// ・inout 引数 //////////////////////////////////////////
+// // 他の言語でいうところの参照渡し
+// // 関数外に引数の変更を共有する
 func greet(user: inout String) -> Void {
     if user.isEmpty {
         user = "Anonymous"
@@ -17,7 +22,8 @@ greet(user: &user)
 print(user)
 
 
-//　可変長引数
+//　・可変長引数 ///////////////////////////////////////////
+// // 任意の個数の引数を受け取ることができる
 func pprint(strings: String...) -> Void {
     if strings.count == 0 {
         return
@@ -32,20 +38,27 @@ pprint(strings: "abc", "def", "ghi")
 
 
 
-// クロージャ
+// 6.3 クロージャ /////////////////////////////////////////////////////////////////
 let double = {(x:Int)->Int in
     return x*2
 }
 print(double(2))
 
-// 簡易引数
+// // 引数と戻り値のかたを省略した場合
+var closure: (String) -> Int
+closure = { string in
+    return string.count*2}
+print(closure("abc"))
+
+// ・簡易引数 //////////////////////////////////////////////
 let isEqual: (Int, Int) -> Bool = {
-    return $0 == $1
+    return $0 == $1 // $nで第n引数を表す
 }
 print(isEqual(1,2))
 
 
-// キャプチャ
+// ・キャプチャ /////////////////////////////////////////////
+// // クロージャが参照する変数や定数はクロージャ自身が定義されたスコープ外でも使用可能
 let counter: ()->Int
 do{
     var count = 0 //countはdoスコープ内で宣言されているが、スコープ外でクロージャを使用可能
@@ -58,21 +71,25 @@ print(counter())
 print(counter()) // ただし、クロージャ内で保持する形なので、実行する度値が替わる
 
 
-// 属性
-// escaping
+// ・属性 //////////////////////////////////////////////////////
+// // ・escaping属性
+// // 非同期的に実行される
 var queue = [()->Void]() // クロージャのリスト
-// 引数にクロージャを取った場合、その関数内でクロージャを実行しないとき、escaping属性が必要
+// // 引数にクロージャを取った場合、その関数内でクロージャを実行しないとき、escaping属性が必要
 func enqueue(operation: @escaping ()->Void) -> Void { 
     queue.append(operation)
 }
 enqueue {
-    print("executed")
+    print("executed") // print()関数をawaitするイメージ
 }
-queue.forEach{
+queue.forEach{ // 実行
     $0()
 }
 
-// autoclosure
+// // ・autoclosure属性
+/* 関数やクロージャが引数の場合、どちらかをautoclosure属性にすることで、
+どちらかの実行のみでいい時はどちらかしか実行しない*/
+// // 特にコストの高い処理を行う時、必要がないときは処理を実行しない方がいい
 func or (_ lhs:Bool, _ rhs: @autoclosure()->Bool) -> Bool {
     if lhs{
         // print("true")
@@ -91,13 +108,11 @@ func rhs() -> Bool {
     print("rhs 実行")
     return false
 }
-/* 関数やクロージャが引数の場合、どちらかをautoclosure属性にすることで、
-どちらかの実行のみでいい時はどちらかしか実行しない*/
 print(or(lhs(), rhs())) 
 
 
-// trailing closure
-// クロージャが引数の場合、クロージャのみを（）外に出す記法をしてよい
+// // ・trailing closure (syntax sugar)
+// // クロージャが引数の場合、クロージャのみを（）外に出す記法をしてよい
 func execute (parameter: Int, handler: (String) -> Void) -> Void {
     handler("parameter is \(parameter)")
 }
