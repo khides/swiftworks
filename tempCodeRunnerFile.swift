@@ -1,23 +1,5 @@
-
-// クラスの継承を利用すべきとき
-// 複数の型の間でストアドプロパティの実装を共有する
-class Animal {
-    var owner: String?{
-        didSet{
-            guard let owner = owner else {
-                return
-            }
-            print("\(self.owner) was assigned as the owner")
-        }
-    }
-}
-class Dog: Animal {
-}
-class Cat: Animal {
-}
-class WildEagle: Animal {
-}
-let dog = Dog()
-dog.owner = "Taro"
-let cat = Cat() 
-print(cat.owner)
+// // 引数と戻り値のかたを省略した場合
+var closure: (String) -> Int
+closure = { string in
+    return string.count*2}
+print(closure("abc"))

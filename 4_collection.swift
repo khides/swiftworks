@@ -1,4 +1,6 @@
-//array型
+//4.2 Array<Element>型 ////////////////////////////////////////
+// 基本的に多言語の配列やリストと変わらん
+let array: [Int] = []
 var integers = [1,2,3]
 integers.append(4)
 print(integers)
@@ -14,21 +16,25 @@ print(integers2)
 integers2.removeAll()
 print(integers2)
 
-//dict型
+
+//4.3 Dictionary<Key, Value>型 ///////////////////////////////////
+// 基本的に多言語の辞書型と変わらん
 let dictionary = ["key": 1]
 print(dictionary["key"])
 
-//range型
+
+//4.4 Range型 /////////////////////////////////////////////////////
 let range = 1..<4
 for val in range{
     print(val)
 }
-print(range.lowerBound)
-print(range.upperBound)
+print(range.lowerBound) //下底
+print(range.upperBound) //上底
 print(range.contains(2))
 
 
-// char型
+// 4.5 String型
+// String型はCharacter型のCollectionとみなせる
 let string = "a"
 let charactor : Character = "a"
 var str = "abc"
@@ -42,27 +48,38 @@ for chr in str{
     print(chr)
 }
 
-
-//sequence プロトコル
+// 4.6 Collectionに関連したプロトコル
+//  Sequence プロトコル
+// for in　を用いて順次アクセス可能
+// 加えて以下のメソッドを使用可能
 let array = [1,2,3,4,5,6,7]
 var gap = 0
 array.forEach({elm in gap -= elm})
 print(gap)
+
 let filtered = array.filter({elm in elm % 2 == 0})
 print(filtered)
+
 let doubled = array.map({elm in elm * 2})
 print(doubled)
+
 let array2 = array.flatMap({elm in [elm, elm + 1]})
 print(array2)
+
 let strings = ["abc", "123", "def", "345"]
 let integers = strings.compactMap({elm in Int(elm)})// 失敗した処理を無視する
 print(integers)
+
 let sum = array.reduce(0, {result, elm in result + elm})
 print(sum)
+
 let concat = array.reduce("", {result, elm in result + String(elm)})
 print(concat)
 
-//collection プロトコル
+
+// Collection プロトコル
+// Sequenceプロトコルの継承プロトコル
+// 以下のメソッドを追加で使用可能
 let array = [1,2,3,4,5,6,7]
 print(array[3])
 print(array.isEmpty)
