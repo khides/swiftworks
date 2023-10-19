@@ -1,5 +1,11 @@
-// // 引数と戻り値のかたを省略した場合
-var closure: (String) -> Int
-closure = { string in
-    return string.count*2}
-print(closure("abc"))
+// // ・while文
+var nextvalue = Optional(1)
+while case let value? = nextvalue{
+    print("value: \(value)")
+    print(type(of: value))
+    if value > 3{
+        nextvalue = nil
+    }else{
+        nextvalue = value+1
+    }
+}

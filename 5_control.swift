@@ -9,7 +9,7 @@ let key = "one"
 let dict = ["one":1,"two":2,"three":3,"four":4]
 print(type(of: dict[key]))
 let value: Int // if let で宣言された定数(val)はスコープ外では使用できないため、外で使いたい時は外に定数を用意しておく
-if let val = dict[key] as Int{
+if let val = dict[key] as? Int{
     value = val //値が存在したら実行
     print(val + 10)
 } else {
@@ -286,12 +286,12 @@ for case 2...3 in array{ // 各要素がマッチした時実行される
 
 // // ・while文
 var nextvalue = Optional(1)
-while case let value? = nextvalue{
+while case let value? = nextvalue{ //オプショナルパターンを使ってアンラップ
     print("value: \(value)")
-
+    print(type(of: value))
     if value > 3{
         nextvalue = nil
     }else{
-        nextvalue += 1
+        nextvalue = value+1
     }
 }
