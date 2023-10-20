@@ -1,11 +1,17 @@
-// // ・while文
-var nextvalue = Optional(1)
-while case let value? = nextvalue{
-    print("value: \(value)")
-    print(type(of: value))
-    if value > 3{
-        nextvalue = nil
-    }else{
-        nextvalue = value+1
+
+protocol strs {
+    var a:String{get set}
+    mutating func change(_ str: String) -> Void
+}
+extension strs {
+    var a:String{return "a"}
+}
+struct abc : strs{
+    var a = "a"
+        mutating func change(_ str:String) -> Void {
+        self.a = str
     }
 }
+var a = abc()
+a.change("b")
+print(a.a)
