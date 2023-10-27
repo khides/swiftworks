@@ -9,7 +9,7 @@ let key = "one"
 let dict = ["one":1,"two":2,"three":3,"four":4]
 print(type(of: dict[key]))
 let value: Int // if let で宣言された定数(val)はスコープ外では使用できないため、外で使いたい時は外に定数を用意しておく
-if let val = dict[key] as? Int{
+if let val = dict[key] {
     value = val //値が存在したら実行
     print(val + 10)
 } else {
@@ -43,13 +43,13 @@ let key = "one"
 let dict = ["one":1,"two":2,"three":3,"four":4]
 print(type(of: dict[key]))
 func someFunction(_ key : String) -> Void {
-    guard let val = dict[key] as Int? else {
+    guard let val = dict[key] else {
         print("not exist")    
     return
     }
     print(val) //guard文で宣言した定数をスコープ外で使うことができる
 }
-someFunction("five")
+someFunction(key)
 
 
 

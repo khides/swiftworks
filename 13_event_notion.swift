@@ -74,3 +74,4 @@ do{
     queue.asyncAfter(deadline: .now+3, execute: {print(object.id)}) //三秒後までクラスのインスタンスが生存->解放
 }
 
+
